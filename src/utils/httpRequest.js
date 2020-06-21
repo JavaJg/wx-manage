@@ -5,6 +5,7 @@ import qs from 'qs'
 import merge from 'lodash/merge'
 import { clearLoginInfo } from '@/utils'
 const baseUrl = '/wx'
+const memains = '/memains'
 
 const http = axios.create({
   timeout: 1000 * 30,
@@ -44,6 +45,14 @@ http.interceptors.response.use(response => {
 http.adornUrl = (actionName) => {
   // 非生产环境 && 开启代理, 接口前缀统一使用[/proxyApi/]前缀做代理拦截!
   return baseUrl + actionName
+}
+/**
+ * 请求地址处理
+ * @param {*} actionName action方法名称
+ */
+http.memains = (actionName) => {
+  // 非生产环境 && 开启代理, 接口前缀统一使用[/proxyApi/]前缀做代理拦截!
+  return memains + actionName
 }
 
 /**
