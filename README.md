@@ -42,3 +42,8 @@ wx-manage提供公众号菜单、自动回复、公众号素材、简易CMS、�
 ## [代码贡献指南](https://www.yuque.com/nifury/wx/ykqswi)
 ## 开发交流
 QQ群：1023785886（技术交流群严禁广告，发广告立即踢出+拉黑+举报） 加群密码：wx
+
+
+fileProcessingPost(){}  文件处理请求
+
+

@@ -50,6 +50,74 @@
       <el-form-item>
         <el-button @click="putTest()">提交</el-button>
       </el-form-item>
+      <br />
+      <br />
+      <el-form-item>
+         选择要处理的文件目录:
+        <el-select
+          v-model="dataForm.value6"
+          filterable
+          allow-create
+          default-first-option
+          placeholder="请选择文章标签"
+        >
+          <el-option
+            v-for="item in options6"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      照片文字中的关键字
+      <el-form-item>
+        <el-button @click="fileProcessingPost()">提交</el-button>
+      </el-form-item>
+      <br />
+      <br />
+      <el-form-item>
+         照片中有文字就删除照片:
+         
+        <el-select
+          v-model="dataForm.value7"
+          filterable
+          allow-create
+          default-first-option
+          placeholder="请选择文章标签"
+        >
+          <el-option
+            v-for="item in options6"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+
+     
+                <el-select
+          v-model="dataForm.keyword"
+          filterable
+          allow-create
+          default-first-option
+          placeholder="请选择文章标签"
+        >
+          <el-option
+            v-for="item in removeFilenameCondition"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        
+      </el-form-item>
+
+      <el-form-item>
+        <el-button @click="deletePhotoByImg()">提交</el-button>
+      </el-form-item>
+
     </el-form>
   </div>
 </template>
@@ -72,10 +140,42 @@ export default {
           label: "JavaScript",
         },
       ],
+      removeFilenameCondition: [
+        {
+          value: "条件",
+          label: "条件",
+        },
+        {
+          value: "条件11",
+          label: "条件11",
+        },
+        {
+          value: "条件11条件11",
+          label: "条件11条件11",
+        },
+      ],
+      
+      options6: [
+        {
+          value: "C:\\Users\\admin\\Desktop\\目录\\",
+          label: "C:\\Users\\admin\\Desktop\\目录\\",
+        },
+        {
+          value: "C:\\Users\\admin\\Desktop\\目录\\photoYuan\\",
+          label: "C:\\Users\\admin\\Desktop\\目录\\photoYuan\\",
+        },
+        {
+          value: "JavaScript",
+          label: "JavaScript",
+        },
+      ],
       dataForm: {
         key: "",
         testName: "66666",
         value10: "",
+        value6: "", //内容
+        value7: "",
+        keyword: ""
       },
       dataList: [],
       pageIndex: 1,
@@ -91,6 +191,49 @@ export default {
     //this.getTest();
   },
   methods: {
+    deletePhotoByImg() {
+      this.dataListLoading = true;
+      // console.log(this.dataForm.value6)
+      this.$http({
+        url: this.$http.memains("/TGImg/AutoImg"),
+        method: "post",
+        params: this.$http.adornParams({
+          folder: this.dataForm.value7,
+          keyword: this.dataForm.keyword,
+        }),
+      }).then(({ data }) => {
+        if (data && data.code === 200) {
+          this.dataList = data.page.list;
+          this.totalCount = data.page.totalCount;
+          testName = this.testName;
+        } else {
+          this.dataList = [];
+          this.totalCount = 0;
+        }
+        this.dataListLoading = false;
+      });
+    },
+    fileProcessingPost() {
+      this.dataListLoading = true;
+      // console.log(this.dataForm.value6)
+      this.$http({
+        url: this.$http.memains("/Automatic/fileProcessingPost"),
+        method: "post",
+        params: this.$http.adornParams({
+          folder: this.dataForm.value6,
+        }),
+      }).then(({ data }) => {
+        if (data && data.code === 200) {
+          this.dataList = data.page.list;
+          this.totalCount = data.page.totalCount;
+          testName = this.testName;
+        } else {
+          this.dataList = [];
+          this.totalCount = 0;
+        }
+        this.dataListLoading = false;
+      });
+    },
     putTest() {
       this.dataListLoading = true;
       this.$http({
